@@ -11,26 +11,25 @@ terraform {
 }
 
 module "resource_group" {
-  #source                   = "git::https://github.com/rafiq-mohammed/Terraform-Azure-Environments.git/Terraform-Azure-Modules//resource_group?ref=develop"
-  source                   = "github.com/rafiq-mohammed/Terraform-Azure-Modules.git//resource_group?ref=release-1.0"
+  source                   = "github.com/mdrafiqsa/iac_azure_modules.git//resource_group?ref=develop"
   rg_array                 = var.rg_array
 }
 
 
 module "virtual_network" {
-  source                   = "github.com/rafiq-mohammed/Terraform-Azure-Modules.git//virtual_network?ref=release-1.0"
+  source                   = "github.com/mdrafiqsa/iac_azure_modules.git//virtual_network?ref=develop"
   vnet_array               = var.vnet_array
   vnet_depends_on          = [module.resource_group]
 }
 
 module "subnet" {
-  source                   = "github.com/rafiq-mohammed/Terraform-Azure-Modules.git//subnet?ref=release-1.0"
+  source                   = "github.com/mdrafiqsa/iac_azure_modules.git//subnet?ref=release-1.0"
   subnet_array             = var.subnet_array
   subnet_depends_on        = [module.virtual_network]
 }
 
 module "network_security_group" {
-  source                   = "github.com/rafiq-mohammed/Terraform-Azure-Modules.git//network_security_group?ref=release-1.0"
+  source                   = "github.com/mdrafiqsa/iac_azure_modules.git//network_security_group?ref=release-1.0"
   nsg_array                = var.nsg_array
   nsg_depends_on           = [module.subnet]
 }
@@ -49,7 +48,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg_subnet_assoc1"
 
 ## PostgresDB
 module "pg" {
-  source                               = "github.com/rafiq-mohammed/Terraform-Azure-Modules.git//postgres?ref=release-1.0"
+  source                               = "github.com/mdrafiqsa/iac_azure_modules.git//postgres?ref=release-1.0"
   pg_name                              = var.pg_name
   location                             = var.location
   #rg_name                              = data.terraform_remote_state.network.outputs.rg_names[0]
@@ -75,7 +74,7 @@ module "pg" {
 
 ## CosmosDB
 module "cosmosdb" {
-  source                               = "github.com/rafiq-mohammed/Terraform-Azure-Modules.git//cosmos_db?ref=release-1.0"
+  source                               = "github.com/mdrafiqsa/iac_azure_modules.git//cosmos_db?ref=release-1.0"
   cassandradb_name                     = var.cassandradb_name
   mongodb_name                         = var.mongodb_name
   cosmosdb_rg_name                     = var.cosmosdb_rg_name
